@@ -7,22 +7,42 @@
 ---
 
 ### 🎯 Objetivo
-Diseñar un sistema de monitoreo en tiempo real para paneles solares residenciales, simulando métricas como **voltaje, corriente, potencia generada y temperatura del panel**.  
-El sistema permite visualizar estos datos mediante **dashboards interactivos**, facilitando el análisis energético y la detección de posibles fallos.
+- Desarrollar un sistema de monitoreo inteligente para paneles solares residenciales que:
+
+- Capture datos relevantes desde sensores físicos o simulados (voltaje, corriente, temperatura, energía).
+
+- Transmita los datos mediante el protocolo MQTT hacia un broker local.
+
+- Almacene las series temporales en InfluxDB con formato adecuado y timestamp.
+
+- Visualice los datos en tiempo real a través de dashboards en Grafana.
+
+- Permita detectar anomalías como sobrecalentamiento o baja producción energética.
+
+- Sea fácilmente replicable, documentado y adaptable a distintos entornos domésticos.
+
+- Este sistema busca empoderar al usuario final con información clara y útil sobre el estado de sus paneles solares, fomentando el uso eficiente de la energía y la autonomía energética.
 
 ---
 
 ### 🧱 Arquitectura del Sistema
 ```mermaid
 graph TD
-    Sensor["Sensor Solar (Simulado)"]
-    MQTT["Broker MQTT"]
-    DB["InfluxDB v2"]
-    Grafana["Dashboard Grafana"]
+    subgraph "🟦 Dispositivo IoT (Raspberry Pi / ESP32)"
+        SensorTemperatura --> Microcontrolador
+        SensorVoltaje --> Microcontrolador
+        SensorCorriente --> Microcontrolador
+        Microcontrolador -->|Publica datos| BrokerMQTT
+    end
 
-    Sensor -->|Publica datos| MQTT
-    MQTT -->|Escribe en DB| DB
-    DB -->|Visualiza métricas| Grafana
+    subgraph "🟨 Servidor Local / Nube"
+        BrokerMQTT -->|Suscripción| ScriptPython
+        ScriptPython -->|Inserta| InfluxDB
+        InfluxDB -->|Consulta| Grafana
+    end
+
+    Grafana -->|Dashboards| UsuarioFinal
+
 
 ```
 
