@@ -1,7 +1,7 @@
 # 🏡 Monitoreo de Paneles Solares Residenciales
 
 ## 📦 Proyecto IoT – Unidad 2.4
-**Autor:** Diego Huerta Espinoza 20212411
+**Autor:** Diego Huerta Espinoza 20212411  
 **Tecnologías:** Python, MQTT, InfluxDB v2, Grafana
 
 ---
